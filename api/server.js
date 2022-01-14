@@ -20,4 +20,16 @@ server.get("/", (req, res) => {
     res.send("API is running!!!")
 })
 
+server.use("*", (req, res) => {
+    res.status(404).json({
+        message:`${req.method} ${req.baseUrl} is not valid`
+    })
+})
+
+server.use( (err, req, res, next) => {
+    res.status(err.status || 500).json({
+        message:`Error:${err.message}`
+    })
+})
+
 module.exports = server;
