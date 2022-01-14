@@ -20,23 +20,6 @@ router.get("/", (req, res, next) =>{
     .catch(next)
 })
 
-// router.get("/:id", validateActionId, (req, res, next) => {
-//     Actions.get(req.params.id)
-//     .then(action => {
-//         if(!action) {
-//             res.status(404).json({
-//                 message:"There is no action with the given id"
-//             })
-//         } else {
-//             res.status(200).json(action)
-//         }
-//     })
-//     .catch(err => {
-//         next(err)
-//     })
-// })
-
-
 router.get("/:id", validateActionId, (req, res) => {
     console.log(req.actions)
     res.json(req.actions)
