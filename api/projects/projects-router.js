@@ -1,5 +1,6 @@
 // Write your "projects" router here!
 const express = require("express");
+const router = express.Router();
 
 const {
     validateProjectId,
@@ -8,7 +9,7 @@ const {
 
 const Projects = require("./projects-model.js");
 
-const router = express.Router();
+
 
 router.get("/", (req, res) => {
     Projects.get()
@@ -48,25 +49,21 @@ router.post("/", validateProject, async (req, res, next) => {
 })
 
 
-router.put("/:id", validateProjectId, validateProject, (req, res, next) => {
-    Projects.update(req.params.id, req.body)
-        .then(project => {
-            if (!project.body.name || !project.body.description) {
-                return res.status(400).json({
-                    message: "Please provide the coorect information"
-                })
-            } else {
-                res.status(200).json(project)
-            }
-        })
-        .catch(next)
+router.put("/:id", validateProjectId, validateProject, async (req, res, next) => {
+    try {
+        const updated = await Projects.update(req.validId.id, req.body)
+        res.status(200).json(updated)
+    } catch (err) {
+        next(err)
+    }
 })
+
 
 router.delete("/:id", validateProjectId, (req, res, next) => {
     Projects.remove(req.params.id)
         .then((id) => {
-                res.status(200).json({
-                message:"The project has been deleted"
+            res.status(200).json({
+                message: "The project has been deleted"
             })
         })
         .catch(next)
